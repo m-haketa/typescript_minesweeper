@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "core-js": "^2.6.5",
+    "underscore": "^1.9.1",
     "vue": "^2.6.10",
     "vue-class-component": "^7.0.2",
     "vue-property-decorator": "^8.1.0"
   },
   "devDependencies": {
+    "@types/underscore": "^1.9.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/cli-plugin-typescript": "^3.8.0",

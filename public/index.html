@@ -14,23 +14,35 @@
     </noscript>
     <div id="app">
       <div>
-      <label for="maxX">フィールドの大きさ</label>
-      <input type="text" id="maxX" v-model.number="maxX" size="3"> × <input type="text" id="maxY" v-model.number="maxY" size="3">
+        <label for="maxX">フィールドの大きさ</label>
+        <input type="text" id="maxX" v-model.number="maxX" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">×
+        <input type="text" id="maxY" v-model.number="maxY" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">
       </div>
       <div>
           <label for="maxX">地雷の数</label>
-          <input type="text" id="NumberOfMine" v-model.number="NumberOfMine" size="3">
+          <input type="text" id="NumberOfMine" v-model.number="NumberOfMine" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">
       </div>
 
-      <button v-on:click="init()">start</button>
-
+      <div style="margin-top:10px;">
+        <button v-on:click="init()">ゲーム開始</button>
+        <button v-on:click="end()">ゲーム終了</button>
+      </div>
+      
       <template v-if="initialized">
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
-          <div v-for="cell in cells" class="cell">
+          <div v-for="(cell,index) in cells" class="cell" v-on:click="openCell(index)">
             <div class="display">{{cell.display}}</div>
           </div>
         </div>
       </template>
+
+      <template v-if="initialized">
+          <div id="debugfield" v-bind:style="{ width: fieldWidthPx }">
+            <div v-for="cell in cells" class="cell">
+              <div class="display">{{cell.kind}}</div>
+            </div>
+          </div>
+        </template>
     </div>
 
     <!-- built files will be auto injected -->

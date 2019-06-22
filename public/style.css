@@ -1,4 +1,8 @@
-#field {
+input.readonly {
+  background: #ddd;
+}
+
+#field, #debugfield {
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
