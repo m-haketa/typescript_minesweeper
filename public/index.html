@@ -36,8 +36,8 @@
 
       <template v-if="initialized">
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
-          <div v-for="(cell,index) in cells" class="cell" v-on:click="openCell(index)">
-            <div class="display">{{cell.display}}</div>
+          <div v-for="(cell,index) in cells" class="cell" v-bind:class="{opened: cell.isOpened}" v-on:click="openCell(index)">
+            <div class="display" v-bind:class="cell.style">{{cell.display}}</div>
           </div>
         </div>
       </template>

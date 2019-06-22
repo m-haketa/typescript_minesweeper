@@ -7,10 +7,23 @@ const MINECHAR = '＊'
 
 interface CellData {
   display: any
+  style: cellStyle
+  isOpened: boolean
   kind: any
 }
 
 type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
+type cellStyle =
+  | 'a0'
+  | 'a1'
+  | 'a2'
+  | 'a3'
+  | 'a4'
+  | 'a5'
+  | 'a6'
+  | 'a7'
+  | 'a8'
+  | 'aMine'
 
 const vm = new Vue({
   el: '#app',
@@ -38,7 +51,7 @@ const vm = new Vue({
       this.cells = Array.apply(null, {
         length: this.maxX * this.maxY
       } as any).map(function(_value: any, index: number) {
-        return { display: '', kind: 0 }
+        return { display: '', style: 'a1', isOpened: false, kind: 0 }
       })
 
       //地雷をセット
@@ -105,15 +118,25 @@ const vm = new Vue({
       return cellAround
     },
 
+    _getStyle: function(display: any): cellStyle {
+      if (display >= 0 && display <= 8) {
+        return ('a' + display) as cellStyle
+      } else {
+        return 'aMine'
+      }
+    },
+
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
     openCell: function(no: number): boolean {
+      this.cells[no].display = this.cells[no].kind
+      this.cells[no].style = this._getStyle(this.cells[no].display)
+      this.cells[no].isOpened = true
+
       if (this.cells[no].kind === MINECHAR) {
         this.openAllCell()
         this.finished = 'Exploded'
         return true
       }
-
-      this.cells[no].display = this.cells[no].kind
 
       //他のセルを開けても支障がない場合。※ここの条件は後で変える
       if (this.cells[no].kind === 0) {
@@ -142,7 +165,9 @@ const vm = new Vue({
 
     openAllCell: function(): void {
       for (let no = 0; no < this.maxNo; no++) {
-        this.cells[no].display = this.cells[no].kind
+        if (this.cells[no].display === '') {
+          this.openCell(no)
+        }
       }
     }
   }
