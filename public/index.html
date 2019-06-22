@@ -11,7 +11,14 @@
     <noscript>
       <strong>We're sorry but test doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <button v-on:click="init()">start</button>
+
+      <template v-if="initialized">
+        init済み
+      </template>
+    </div>
+
     <!-- built files will be auto injected -->
   </body>
 </html>
