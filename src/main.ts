@@ -102,8 +102,6 @@ const vm = new Vue({
         }
       )
 
-      console.log(cellAround)
-
       return cellAround
     },
 
