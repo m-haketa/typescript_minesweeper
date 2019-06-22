@@ -27,7 +27,7 @@ const vm = new Vue({
 
   computed: {
     fieldWidthPx: function(): string {
-      return this.maxX * 30 + 25 + 'px'
+      return this.maxX * 31 + 'px'
     },
     maxNo: function(): number {
       return this.maxX * this.maxY
