@@ -46,6 +46,7 @@ const vm = new Vue({
     maxX: 10,
     maxY: 5,
     NumberOfMine: 5,
+    FlagSet: 0,
     initialized: false,
     finished: '' as finishStatus,
     NumberOfOpenCell: 0,
@@ -59,6 +60,9 @@ const vm = new Vue({
     },
     maxNo: function(): number {
       return this.maxX * this.maxY
+    },
+    mineRemained: function(): number {
+      return this.NumberOfMine - this.FlagSet
     }
   },
   methods: {
@@ -199,6 +203,7 @@ const vm = new Vue({
       if (this.NumberOfOpenCell + this.NumberOfMine === this.maxNo) {
         this.openAllCell()
         this.finished = 'Success'
+        this.FlagSet = this.NumberOfMine
         return true
       }
 
@@ -211,7 +216,11 @@ const vm = new Vue({
       }
 
       this.cells[no].marked = !this.cells[no].marked
-      //  this.cells[no].display = 'P'
+      if (this.cells[no].marked) {
+        this.FlagSet++
+      } else {
+        this.FlagSet--
+      }
     },
 
     openAllCell: function(): void {

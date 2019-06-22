@@ -14,27 +14,31 @@
     </noscript>
     <div id="app">
       <div>
-        <label for="maxX">フィールドの大きさ</label>
+        <label for="maxX">フィールドの大きさ　横</label>
         <input type="text" id="maxX" v-model.number="maxX" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">×
+        
+        <label for="maxY">縦</label>
         <input type="text" id="maxY" v-model.number="maxY" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">
+        <label for="NumberOfMine">地雷の数</label>
+        <input type="text" id="NumberOfMine" v-model.number="NumberOfMine" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">
       </div>
-      <div>
-          <label for="maxX">地雷の数</label>
-          <input type="text" id="NumberOfMine" v-model.number="NumberOfMine" size="3" v-bind:readonly="initialized" v-bind:class="{readonly: initialized}">
+      <div style="margin-top:10px;">
+        <input type="checkbox" id="debugmode" v-model="debugMode">
+        <label for="debugmode">地雷の配置などを表示する（デバッグ用）</label>
       </div>
 
-      <div style="margin-top:10px;">
+      <div style="margin-top:20px;">
         <button v-on:click="init()">新ゲーム開始</button>
         <button v-on:click="suspend()" v-if="initialized && !finished">ゲーム中断</button>
         <button v-on:click="suspend()" v-if="initialized && finished">設定変更</button>
       </div>
 
-      <div style="margin-top:10px;">
-          <input type="checkbox" id="debugmode" v-model="debugMode">
-          <label for="debugmode">地雷の配置などを表示する（デバッグ用）</label>
-      </div>
-
       <template v-if="initialized">
+        <div style="margin-top:20px;">
+          <label for="MineRemained">残りの地雷の数</label>
+          <input type="text" id="MineRemained" size="3" readonly class="readonly" v-bind:value="mineRemained">
+        </div>
+
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
           <div v-for="(cell,index) in cells" class="cell" style="user-select:none;" v-bind:class="getStyle(index)" v-on:click="openCell(index)" v-on:contextmenu.prevent="markCell(index)">
             {{cell.display}}
