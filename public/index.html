@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <link rel="stylesheet" href="./style.css?2">
     <title>test</title>
   </head>
   <body>
@@ -12,10 +13,23 @@
       <strong>We're sorry but test doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <div id="app">
+      <div>
+      <label for="maxX">フィールドの大きさ</label>
+      <input type="text" id="maxX" v-model.number="maxX" size="3"> × <input type="text" id="maxY" v-model.number="maxY" size="3">
+      </div>
+      <div>
+          <label for="maxX">地雷の数</label>
+          <input type="text" id="NumberOfMine" v-model.number="NumberOfMine" size="3">
+      </div>
+
       <button v-on:click="init()">start</button>
 
       <template v-if="initialized">
-        init済み
+        <div id="field" v-bind:style="{ width: fieldWidthPx }">
+          <div v-for="cell in cells" class="cell">
+            <div class="display">{{cell.display}}</div>
+          </div>
+        </div>
       </template>
     </div>
 

@@ -1,0 +1,17 @@
+#field {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+div.cell {
+  display: flex;
+  border: 1px #000 solid;
+  width: 30px;
+  height: 30px;
+  margin-right: -1px;
+  margin-bottom: -1px;
+  justify-content: center;
+  align-items: center;
+}
+

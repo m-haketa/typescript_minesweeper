@@ -3,7 +3,7 @@ import App from './App.vue'
 
 Vue.config.productionTip = false
 
-new Vue({
+const vm = new Vue({
   el: '#app',
   data: {
     maxX: 10,
@@ -14,20 +14,18 @@ new Vue({
   computed: {
     initialized: function() {
       return this.cells.length > 0
+    },
+    fieldWidthPx: function() {
+      return this.maxX * 30 + 25 + 'px'
     }
   },
   methods: {
     init: function() {
-      let mineArr = []
-      this.cells = []
-
-      for (var i = 0; i < this.maxX * this.maxX; i++) {
-        this.cells = Array.apply(null, {
-          length: this.maxX * this.maxY
-        } as any).map(function(_value: any, index: number) {
-          return index
-        })
-      }
+      this.cells = Array.apply(null, {
+        length: this.maxX * this.maxY
+      } as any).map(function(_value: any, index: number) {
+        return { display: '*', kind: '' }
+      })
     }
   }
 })
