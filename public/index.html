@@ -36,16 +36,16 @@
 
       <template v-if="initialized">
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
-          <div v-for="(cell,index) in cells" class="cell" style="user-select:none;" v-bind:class="getBgClass(index)" v-on:click="openCell(index)" v-on:contextmenu.prevent="markCell(index)">
-            <div class="display" v-bind:class="getStyle(index)">{{cell.display}}</div>
+          <div v-for="(cell,index) in cells" class="cell" style="user-select:none;" v-bind:class="getStyle(index)" v-on:click="openCell(index)" v-on:contextmenu.prevent="markCell(index)">
+            {{cell.display}}
           </div>
         </div>
       </template>
 
       <template v-if="initialized && debugMode">
         <div id="debugfield" v-bind:style="{ width: fieldWidthPx }">
-          <div v-for="cell in cells" class="cell opened">
-            <div class="display">{{cell.kind}}</div>
+          <div v-for="cell in cells" class="cell debug">
+            {{cell.kind}}
           </div>
         </div>
       </template>

@@ -34,6 +34,10 @@ const CELLATTR = {
   //  P: { style: 'amarked', bgClass: 'marked' }
 } as CellAttr
 
+interface ClassObject {
+  [key: string]: boolean
+}
+
 type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
 
 const vm = new Vue({
@@ -129,46 +133,46 @@ const vm = new Vue({
       return cellAround
     },
 
-    getStyle: function(no: number): string {
-      let ret = ''
-      if (this.cells[no].display !== '') {
-        ret = CELLATTR[String(this.cells[no].display)].style
+    getStyle: function(no: number): ClassObject {
+      let ret = {} as ClassObject
+
+      //0～9と＊の表示
+      const display = String(this.cells[no].display)
+      if (display !== '') {
+        ret[CELLATTR[display].style] = true
       }
 
       if (this.cells[no].marked === true) {
-        if (ret === '') {
-          ret = 'amarked'
-        } else {
-          ret = 'amissed'
-        }
+        ret.amarked = true
       }
-
       return ret
     },
+    /*
+    getBgClass: function(no: number): ClassObject {
+      let ret = {} as ClassObject
 
-    getBgClass: function(no: number): string {
-      let ret = ''
-      if (this.cells[no].display !== '') {
-        ret = CELLATTR[String(this.cells[no].display)].bgClass
+      const display = String(this.cells[no].display)
+      if (display !== '') {
+        ret[CELLATTR[display].bgClass] = true
       }
 
       if (this.cells[no].marked === true) {
-        if (ret === '') {
-          ret = 'bgmarked'
-        } else {
-          ret = 'bgmissed'
-        }
+        ret.bgmarked = true
       }
       return ret
     },
-
+    */
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
-    openCell: function(no: number): boolean {
-      if (this.cells[no].marked === true) {
+    openCell: function(no: number, allOpen: boolean = false): boolean {
+      if (this.cells[no].marked === true && !allOpen) {
         return false
       }
 
       this.cells[no].display = this.cells[no].kind
+
+      if (allOpen) {
+        return true
+      }
 
       if (this.cells[no].kind === MINECHAR) {
         this.openAllCell()
@@ -183,7 +187,7 @@ const vm = new Vue({
           (no): boolean => {
             //まだ開けていないセルに対して処理をする
             if (this.cells[no].display === '') {
-              return this.openCell(no)
+              return this.openCell(no, allOpen)
             }
             return false
           }
@@ -206,14 +210,14 @@ const vm = new Vue({
         return
       }
 
-      this.cells[no].marked = true
+      this.cells[no].marked = !this.cells[no].marked
       //  this.cells[no].display = 'P'
     },
 
     openAllCell: function(): void {
       for (let no = 0; no < this.maxNo; no++) {
         if (this.cells[no].display === '') {
-          this.openCell(no)
+          this.openCell(no, true)
         }
       }
     }

@@ -20,60 +20,65 @@ div.cell {
   background: #aaa;
 }
 
-div.cell div {
+div.cell {
   font-weight: bold;
 }
 
-div.bgopened {
+div.debug {
   background: #fff;
 }
 
-div.bgmine {
-  background: #900;
+div.a0 {
+  color: #fff;
+  background: #fff;
 }
 
-div.bgmarked {
-  background: #aaa;
+div.a1 {
+  color: #00f;
+  background: #fff;
+}
+
+div.a2 {
+  color: #0a0;
+  background: #fff;
+}
+
+div.a3 {
+  color: #a00;
+  background: #fff;
+}
+
+div.a4 {
+  color: #00a;
+  background: #fff;
+}
+
+div.a5 {
+  color: #a41;
+  background: #fff;
+}
+
+div.a6 {
+  color: #55c;
+  background: #fff;
+}
+
+div.a7 {
+  color: #000;
+  background: #fff;
+}
+
+div.a8 {
+  color: #666;
+  background: #fff;
+}
+
+div.amine {
+  color: #f00;
+  background: #600;
+}
+
+div.amarked {
   background-image: url("./marked.png");
   background-repeat: no-repeat;
-}
-
-div.cell div.a0 {
-  color: #fff;
-}
-
-div.cell div.a1 {
-  color: #00f;
-}
-
-div.cell div.a2 {
-  color: #0a0;
-}
-
-div.cell div.a3 {
-  color: #a00;
-}
-
-div.cell div.a4 {
-  color: #00a;
-}
-
-div.cell div.a5 {
-  color: #a41;
-}
-
-div.cell div.a6 {
-  color: #55c;
-}
-
-div.cell div.a7 {
-  color: #000;
-}
-
-div.cell div.a8 {
-  color: #666;
-}
-
-div.cell div.amine {
-  color: #f00;
 }
