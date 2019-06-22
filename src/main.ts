@@ -31,7 +31,6 @@ const CELLATTR = {
   '7': { style: 'a7', bgClass: 'bgopened' },
   '8': { style: 'a8', bgClass: 'bgopened' },
   '＊': { style: 'amine', bgClass: 'bgmine' }
-  //  P: { style: 'amarked', bgClass: 'marked' }
 } as CellAttr
 
 interface ClassObject {
@@ -167,21 +166,7 @@ const vm = new Vue({
       }
       return ret
     },
-    /*
-    getBgClass: function(no: number): ClassObject {
-      let ret = {} as ClassObject
 
-      const display = String(this.cells[no].display)
-      if (display !== '') {
-        ret[CELLATTR[display].bgClass] = true
-      }
-
-      if (this.cells[no].marked === true) {
-        ret.bgmarked = true
-      }
-      return ret
-    },
-    */
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
     openCell: function(no: number, allOpen: boolean = false): boolean {
       if (this.cells[no].marked === true && !allOpen) {
