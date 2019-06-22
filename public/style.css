@@ -24,12 +24,18 @@ div.cell div {
   font-weight: bold;
 }
 
-div.opened {
+div.bgopened {
   background: #fff;
 }
 
-div.mine {
+div.bgmine {
   background: #900;
+}
+
+div.bgmarked {
+  background: #aaa;
+  background-image: url("./marked.png");
+  background-repeat: no-repeat;
 }
 
 div.cell div.a0 {
@@ -68,6 +74,6 @@ div.cell div.a8 {
   color: #666;
 }
 
-div.cell div.aMine {
+div.cell div.amine {
   color: #f00;
 }

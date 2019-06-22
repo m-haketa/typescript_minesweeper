@@ -8,7 +8,31 @@ const MINECHAR = '＊'
 interface CellData {
   display: any
   kind: any
+  marked: boolean
 }
+
+interface CellAttrData {
+  style: string
+  bgClass: string
+}
+
+interface CellAttr {
+  [cellKind: string]: CellAttrData
+}
+
+const CELLATTR = {
+  '0': { style: 'a0', bgClass: 'bgopened' },
+  '1': { style: 'a1', bgClass: 'bgopened' },
+  '2': { style: 'a2', bgClass: 'bgopened' },
+  '3': { style: 'a3', bgClass: 'bgopened' },
+  '4': { style: 'a4', bgClass: 'bgopened' },
+  '5': { style: 'a5', bgClass: 'bgopened' },
+  '6': { style: 'a6', bgClass: 'bgopened' },
+  '7': { style: 'a7', bgClass: 'bgopened' },
+  '8': { style: 'a8', bgClass: 'bgopened' },
+  '＊': { style: 'amine', bgClass: 'bgmine' }
+  //  P: { style: 'amarked', bgClass: 'marked' }
+} as CellAttr
 
 type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
 
@@ -38,7 +62,7 @@ const vm = new Vue({
       this.cells = Array.apply(null, {
         length: this.maxX * this.maxY
       } as any).map(function(_value: any, index: number) {
-        return { display: '', kind: 0 }
+        return { display: '', kind: 0, marked: false }
       })
 
       //地雷をセット
@@ -106,26 +130,44 @@ const vm = new Vue({
     },
 
     getStyle: function(no: number): string {
-      const display = this.cells[no].display
-      if (display >= 0 && display <= 8) {
-        return 'a' + display
-      } else {
-        return 'aMine'
+      let ret = ''
+      if (this.cells[no].display !== '') {
+        ret = CELLATTR[String(this.cells[no].display)].style
       }
+
+      if (this.cells[no].marked === true) {
+        if (ret === '') {
+          ret = 'amarked'
+        } else {
+          ret = 'amissed'
+        }
+      }
+
+      return ret
     },
 
     getBgClass: function(no: number): string {
-      if (this.cells[no].display === '') {
-        return ''
-      } else if (this.cells[no].display === MINECHAR) {
-        return 'mine'
-      } else {
-        return 'opened'
+      let ret = ''
+      if (this.cells[no].display !== '') {
+        ret = CELLATTR[String(this.cells[no].display)].bgClass
       }
+
+      if (this.cells[no].marked === true) {
+        if (ret === '') {
+          ret = 'bgmarked'
+        } else {
+          ret = 'bgmissed'
+        }
+      }
+      return ret
     },
 
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
     openCell: function(no: number): boolean {
+      if (this.cells[no].marked === true) {
+        return false
+      }
+
       this.cells[no].display = this.cells[no].kind
 
       if (this.cells[no].kind === MINECHAR) {
@@ -157,6 +199,15 @@ const vm = new Vue({
       }
 
       return false
+    },
+
+    markCell: function(no: number): void {
+      if (this.cells[no].display !== '') {
+        return
+      }
+
+      this.cells[no].marked = true
+      //  this.cells[no].display = 'P'
     },
 
     openAllCell: function(): void {
