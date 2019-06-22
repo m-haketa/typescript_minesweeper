@@ -105,6 +105,7 @@ const vm = new Vue({
       this.initialized = true
       this.finished = false
       this.NumberOfOpenCell = 0
+      this.FlagSet = 0
       this.startTimeSerial = new Date().getTime()
       this.elapsedTime = 0
 
