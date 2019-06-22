@@ -6,9 +6,11 @@ Vue.config.productionTip = false
 const MINECHAR = '＊'
 
 interface CellData {
-  display: string
+  display: any
   kind: any
 }
+
+type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
 
 const vm = new Vue({
   el: '#app',
@@ -17,8 +19,12 @@ const vm = new Vue({
     maxY: 5,
     NumberOfMine: 5,
     initialized: false,
-    cells: [] as CellData[]
+    finished: '' as finishStatus,
+    NumberOfOpenCell: 0,
+    cells: [] as CellData[],
+    debugMode: false
   },
+
   computed: {
     fieldWidthPx: function(): string {
       return this.maxX * 30 + 25 + 'px'
@@ -33,8 +39,6 @@ const vm = new Vue({
         length: this.maxX * this.maxY
       } as any).map(function(_value: any, index: number) {
         return { display: '', kind: 0 }
-        //後で配列をShuffleするため、ここでのindexは仮。
-        //後でindexを振り直す
       })
 
       //地雷をセット
@@ -68,10 +72,13 @@ const vm = new Vue({
         }
       }
       this.initialized = true
+      this.finished = ''
+      this.NumberOfOpenCell = 0
     },
 
-    end: function() {
+    suspend: function() {
       this.initialized = false
+      this.finished = ''
     },
 
     getCellAround: function(no: number): number[] {
@@ -99,8 +106,46 @@ const vm = new Vue({
 
       return cellAround
     },
-    openCell: function(no: number): void {
+
+    //再帰的に呼び出される。返り値がtrueのときには処理を中断する
+    openCell: function(no: number): boolean {
+      if (this.cells[no].kind === MINECHAR) {
+        this.openAllCell()
+        this.finished = 'Exploded'
+        return true
+      }
+
       this.cells[no].display = this.cells[no].kind
+
+      //他のセルを開けても支障がない場合。※ここの条件は後で変える
+      if (this.cells[no].kind === 0) {
+        const cellAround = this.getCellAround(no)
+        cellAround.some(
+          (no): boolean => {
+            //まだ開けていないセルに対して処理をする
+            if (this.cells[no].display === '') {
+              return this.openCell(no)
+            }
+            return false
+          }
+        )
+      }
+
+      this.NumberOfOpenCell += 1
+
+      if (this.NumberOfOpenCell + this.NumberOfMine === this.maxNo) {
+        this.openAllCell()
+        this.finished = 'Success'
+        return true
+      }
+
+      return false
+    },
+
+    openAllCell: function(): void {
+      for (let no = 0; no < this.maxNo; no++) {
+        this.cells[no].display = this.cells[no].kind
+      }
     }
   }
 })

@@ -24,10 +24,16 @@
       </div>
 
       <div style="margin-top:10px;">
-        <button v-on:click="init()">ゲーム開始</button>
-        <button v-on:click="end()">ゲーム終了</button>
+        <button v-on:click="init()">新ゲーム開始</button>
+        <button v-on:click="suspend()" v-if="initialized && !finished">ゲーム中断</button>
+        <button v-on:click="suspend()" v-if="initialized && finished">設定変更</button>
       </div>
-      
+
+      <div style="margin-top:10px;">
+          <input type="checkbox" id="debugmode" v-model="debugMode">
+          <label for="debugmode">地雷の配置などを表示する（デバッグ用）</label>
+      </div>
+
       <template v-if="initialized">
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
           <div v-for="(cell,index) in cells" class="cell" v-on:click="openCell(index)">
@@ -36,13 +42,15 @@
         </div>
       </template>
 
-      <template v-if="initialized">
-          <div id="debugfield" v-bind:style="{ width: fieldWidthPx }">
-            <div v-for="cell in cells" class="cell">
-              <div class="display">{{cell.kind}}</div>
-            </div>
+      <template v-if="initialized && debugMode">
+        <div id="debugfield" v-bind:style="{ width: fieldWidthPx }">
+          <div v-for="cell in cells" class="cell">
+            <div class="display">{{cell.kind}}</div>
           </div>
-        </template>
+        </div>
+      </template>
+
+      <div> {{ finished }} </div>
     </div>
 
     <!-- built files will be auto injected -->
