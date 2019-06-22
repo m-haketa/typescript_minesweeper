@@ -38,8 +38,6 @@ interface ClassObject {
   [key: string]: boolean
 }
 
-type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
-
 const vm = new Vue({
   el: '#app',
   data: {
@@ -48,10 +46,12 @@ const vm = new Vue({
     NumberOfMine: 5,
     FlagSet: 0,
     initialized: false,
-    finished: '' as finishStatus,
+    finished: false,
     NumberOfOpenCell: 0,
     cells: [] as CellData[],
-    debugMode: false
+    debugMode: false,
+    startTimeSerial: 0,
+    elapsedTime: 0
   },
 
   computed: {
@@ -104,13 +104,29 @@ const vm = new Vue({
         }
       }
       this.initialized = true
-      this.finished = ''
+      this.finished = false
       this.NumberOfOpenCell = 0
+      this.startTimeSerial = new Date().getTime()
+      this.elapsedTime = 0
+
+      setTimeout(this.getElapsedTime, 500)
+    },
+
+    getElapsedTime: function(): void {
+      if (this.finished) {
+        return
+      }
+
+      this.elapsedTime = Math.floor(
+        (new Date().getTime() - this.startTimeSerial) / 1000
+      )
+
+      setTimeout(this.getElapsedTime, 500)
     },
 
     suspend: function() {
       this.initialized = false
-      this.finished = ''
+      this.finished = true
     },
 
     getCellAround: function(no: number): number[] {
@@ -180,7 +196,7 @@ const vm = new Vue({
 
       if (this.cells[no].kind === MINECHAR) {
         this.openAllCell()
-        this.finished = 'Exploded'
+        this.finished = true
         return true
       }
 
@@ -199,13 +215,7 @@ const vm = new Vue({
       }
 
       this.NumberOfOpenCell += 1
-
-      if (this.NumberOfOpenCell + this.NumberOfMine === this.maxNo) {
-        this.openAllCell()
-        this.finished = 'Success'
-        this.FlagSet = this.NumberOfMine
-        return true
-      }
+      this.checkFinished()
 
       return false
     },
@@ -221,6 +231,8 @@ const vm = new Vue({
       } else {
         this.FlagSet--
       }
+
+      this.checkFinished()
     },
 
     openAllCell: function(): void {
@@ -228,6 +240,18 @@ const vm = new Vue({
         if (this.cells[no].display === '') {
           this.openCell(no, true)
         }
+      }
+    },
+
+    checkFinished: function(): void {
+      if (
+        this.mineRemained === 0 &&
+        this.NumberOfOpenCell + this.NumberOfMine === this.maxNo
+      ) {
+        this.finished = true
+        window.confirm(
+          `おめでとうございます！経過時間は${this.elapsedTime}秒です`
+        )
       }
     }
   }

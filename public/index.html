@@ -37,6 +37,9 @@
         <div style="margin-top:20px;">
           <label for="MineRemained">残りの地雷の数</label>
           <input type="text" id="MineRemained" size="3" readonly class="readonly" v-bind:value="mineRemained">
+
+          <label for="ElapsedTime">経過秒数</label>
+          <input type="text" id="ElapsedTime" size="4" readonly class="readonly" v-bind:value="elapsedTime">
         </div>
 
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
@@ -53,8 +56,6 @@
           </div>
         </div>
       </template>
-
-      <div> {{ finished }} </div>
     </div>
 
     <!-- built files will be auto injected -->
