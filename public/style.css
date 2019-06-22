@@ -28,6 +28,10 @@ div.opened {
   background: #fff;
 }
 
+div.mine {
+  background: #900;
+}
+
 div.cell div.a0 {
   color: #fff;
 }

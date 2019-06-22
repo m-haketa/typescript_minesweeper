@@ -7,23 +7,10 @@ const MINECHAR = '＊'
 
 interface CellData {
   display: any
-  style: cellStyle
-  isOpened: boolean
   kind: any
 }
 
 type finishStatus = 'Success' | 'Exploded' | 'Suspended' | ''
-type cellStyle =
-  | 'a0'
-  | 'a1'
-  | 'a2'
-  | 'a3'
-  | 'a4'
-  | 'a5'
-  | 'a6'
-  | 'a7'
-  | 'a8'
-  | 'aMine'
 
 const vm = new Vue({
   el: '#app',
@@ -51,7 +38,7 @@ const vm = new Vue({
       this.cells = Array.apply(null, {
         length: this.maxX * this.maxY
       } as any).map(function(_value: any, index: number) {
-        return { display: '', style: 'a1', isOpened: false, kind: 0 }
+        return { display: '', kind: 0 }
       })
 
       //地雷をセット
@@ -118,19 +105,28 @@ const vm = new Vue({
       return cellAround
     },
 
-    _getStyle: function(display: any): cellStyle {
+    getStyle: function(no: number): string {
+      const display = this.cells[no].display
       if (display >= 0 && display <= 8) {
-        return ('a' + display) as cellStyle
+        return 'a' + display
       } else {
         return 'aMine'
+      }
+    },
+
+    getBgClass: function(no: number): string {
+      if (this.cells[no].display === '') {
+        return ''
+      } else if (this.cells[no].display === MINECHAR) {
+        return 'mine'
+      } else {
+        return 'opened'
       }
     },
 
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
     openCell: function(no: number): boolean {
       this.cells[no].display = this.cells[no].kind
-      this.cells[no].style = this._getStyle(this.cells[no].display)
-      this.cells[no].isOpened = true
 
       if (this.cells[no].kind === MINECHAR) {
         this.openAllCell()
