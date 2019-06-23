@@ -50,7 +50,8 @@ const vm = new Vue({
     cells: [] as CellData[],
     debugMode: false,
     startTimeSerial: 0,
-    elapsedTime: 0
+    elapsedTime: 0,
+    markByLeftClick: false
   },
 
   computed: {
@@ -62,6 +63,9 @@ const vm = new Vue({
     },
     mineRemained: function(): number {
       return this.NumberOfMine - this.FlagSet
+    },
+    markByLeftClickText(): string {
+      return this.markByLeftClick ? 'mark' : 'open'
     }
   },
   methods: {
@@ -167,7 +171,9 @@ const vm = new Vue({
       }
       return ret
     },
-
+    leftClick: function(no: number): void {
+      this.markByLeftClick ? this.markCell(no) : this.openCell(no)
+    },
     //再帰的に呼び出される。返り値がtrueのときには処理を中断する
     openCell: function(no: number, allOpen: boolean = false): boolean {
       if (this.cells[no].marked === true && !allOpen) {
@@ -239,6 +245,9 @@ const vm = new Vue({
           `おめでとうございます！経過時間は${this.elapsedTime}秒です`
         )
       }
+    },
+    toggleMarkByLeftClickText: function(): void {
+      this.markByLeftClick = !this.markByLeftClick
     }
   }
 })

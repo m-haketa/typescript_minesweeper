@@ -43,12 +43,20 @@
         </div>
 
         <div id="field" v-bind:style="{ width: fieldWidthPx }">
-          <div v-for="(cell,index) in cells" class="cell" style="user-select:none;" v-bind:class="getStyle(index)" v-on:click="openCell(index)" v-on:contextmenu.prevent="markCell(index)">
+          <div v-for="(cell,index) in cells" class="cell" style="user-select:none;" v-bind:class="getStyle(index)" v-on:click="leftClick(index)" v-on:contextmenu.prevent="markCell(index)">
             {{cell.display}}
           </div>
         </div>
-      </template>
 
+        <div class="toggleswitch">
+          <label class="switch" v-on:click="toggleMarkByLeftClickText()">
+              <span class="label">
+                  <span v-bind:class="markByLeftClickText">{{ markByLeftClickText }}</span><span class="separator"></span>
+              </span>
+          </label>
+        </div>
+      </template>
+      
       <template v-if="initialized && debugMode">
         <div id="debugfield" v-bind:style="{ width: fieldWidthPx }">
           <div v-for="cell in cells" class="cell debug">
