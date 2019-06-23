@@ -175,6 +175,7 @@ const vm = new Vue({
       }
 
       this.cells[no].display = this.cells[no].kind
+      this.NumberOfOpenCell += 1
 
       if (allOpen) {
         return true
@@ -200,7 +201,6 @@ const vm = new Vue({
         )
       }
 
-      this.NumberOfOpenCell += 1
       this.checkFinished()
 
       return false
