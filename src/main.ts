@@ -180,6 +180,10 @@ const vm = new Vue({
         return false
       }
 
+      if (this.cells[no].display !== '') {
+        return false
+      }
+
       this.cells[no].display = this.cells[no].kind
       this.NumberOfOpenCell += 1
 
